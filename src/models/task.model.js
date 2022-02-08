@@ -9,14 +9,14 @@ var Task = (task) => {
 }
 
 //get all tasks
-Task.getAllTaks = (result) =>{
-    db_cont.query(`SELECT * FROM tasks`,( err, res) =>{
+Task.getAllTasks = async(result) =>{
+    await db_cont.execute('SELECT * FROM tasks',( err, res) =>{
         if(err){
             console.log("Error while fetching tasks", err);
-            result(null,err);
+            result(null, err);
         }else{
             console.log("Taks fetched successfuly");
-            result(null,res);
+            result(res, err);
         }
     })
 }

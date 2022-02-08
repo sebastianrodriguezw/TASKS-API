@@ -1,10 +1,7 @@
+//get the client
+const mysql = require('mysql2');
 
-
-async function main() {
-  //get the client
-const mysql = require('mysql2/promise');
-
-  connection = await mysql.createConnection({
+  connection = mysql.createConnection({
     host: '207.244.244.208',
     user: 'admin_todo',
     password: 'smeXhuMzew8923AkEV2Uj',
@@ -16,10 +13,5 @@ const mysql = require('mysql2/promise');
     console.log("Data base connected")
   })
 
-  const xd = await connection.execute('SELECT * FROM tasks');
-
-  console.log(xd[0])
- }
-
- main();
+module.exports = connection;
 
