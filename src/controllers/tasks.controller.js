@@ -4,7 +4,18 @@ const TaskModel = require('../models/task.model')
 exports.getTaskList = (req, res) =>{
   TaskModel.getAllTasks((tasks, err) =>{
     if(err);
+    res.setHeader('content-type', 'application/json');
     res.send(tasks);
-    console.log(tasks);
+    res.end();
+  })
+}
+
+// get specific task
+exports.getTask = (req, res) =>{
+  TaskModel.getTask(req.params.id, (task, err) =>{
+    if(err);
+    res.setHeader('content-type', 'application/json');
+    res.send(task);
+    res.end();
   })
 }

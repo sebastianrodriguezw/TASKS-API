@@ -15,10 +15,22 @@ Task.getAllTasks = async(result) =>{
             console.log("Error while fetching tasks", err);
             result(null, err);
         }else{
-            console.log("Taks fetched successfuly");
+            console.log("Tasks fetched successfuly");
             result(res, err);
         }
     })
 }
+
+Task.getTask = async(id, result) =>{
+    await db_cont.execute('SELECT * FROM tasks where id = ?', [id], ( err, res) =>{
+        if(err){
+            console.log("Error while fetching tasks", err);
+            result(null, err);
+        }else{
+            console.log("Task fetched successfuly");
+            result(res, err);
+        }
+    })
+} 
 
 module.exports = Task;

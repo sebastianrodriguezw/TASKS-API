@@ -21,9 +21,9 @@ app.get('/', (req, res) => {
 const taskRoutes = require('./src/routes/task.route');
 
 // create task routes
-app.use('/tasks', taskRoutes)
+app.use('/tasks', taskRoutes);
 
-//listen protected
+//listen PORT
 app.listen(PORT, () => {
     console.log(`Server Running`);
 });
