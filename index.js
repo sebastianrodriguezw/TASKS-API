@@ -6,7 +6,7 @@ const app = express();
 
 // config the server port
 
-const PORT= process.env.APP_PORT;
+const PORT= process.env.PORT || 5000;
 
 // http request return json response
 app.use(express.json());
