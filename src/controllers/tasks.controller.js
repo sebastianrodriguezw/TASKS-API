@@ -4,7 +4,7 @@ const TaskModel = require('../models/task.model')
 exports.getTaskList = (req, res) =>{
   TaskModel.getAllTasks((tasks, err) =>{
     if(!err) {
-      return res.status(200).json({
+      return res.json({
         status: 'success',
         data: tasks
       });
@@ -26,7 +26,24 @@ exports.getTask = (req, res) =>{
         data: task
       });
     }  else{
-      return res.status(400).json({
+      return res.status(404).json({
+        status: 'forbidden',
+        error: 'This record not exist'
+      });
+    }
+  })
+}
+
+// delete specific task
+exports.deleteTask = (req, res) =>{
+  TaskModel.deleteTask(req.params.id, (rows_affected, err) =>{
+    if (rows_affected > 0) {
+      return res.status(200).json({
+        status: 'success',
+        message: 'Task deleted successfully'
+      });
+    }  else{
+      return res.status(404).json({
         status: 'forbidden',
         error: 'This record not exist'
       });

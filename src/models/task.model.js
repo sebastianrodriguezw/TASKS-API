@@ -8,7 +8,7 @@ var Task = (task) => {
   this.status = task.status;
 }
 
-//get all tasks
+//get task
 Task.getAllTasks = async(result) =>{
   const data = await db_cont.execute('SELECT * FROM tasks',( err, res) =>{
     console.log("Task fetched successfuly");
@@ -17,10 +17,19 @@ Task.getAllTasks = async(result) =>{
 }
 
 Task.getTask = async(id, result) =>{
-  const data = await db_cont.execute('SELECT * FROM tasks where id = ?', [id], (err, res) =>{
+  const data = await db_cont.execute('SELECT * FROM tasks WHERE id = ?', [id], (err, res) =>{
     console.log("Task fetched successfuly");
     result(res, err);
   })    
 } 
+
+//delete task 
+Task.deleteTask = async(id, result) =>{
+  const data = await db_cont.execute('DELETE FROM tasks WHERE id = ?', [id],( err, res) =>{
+    console.log("Delete query ran successfuly");
+    result(res.affectedRows, err);
+  })    
+}
+
 
 module.exports = Task;
