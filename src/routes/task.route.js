@@ -3,9 +3,18 @@ const router = express.Router();
 
 const taskController = require('../controllers/tasks.controller');
 
-// get all tasks
+// route for get all tasks
 router.get('/', taskController.getTaskList);
+
+// route for create task
+router.post('/create', taskController.createTask);
+
+// route for get task by id
 router.get('/:id', taskController.getTask);
-router.delete('/:id', taskController.deleteTask);
+
+// route for delete task
+router.delete('/:id/delete', taskController.deleteTask);
+
+//
 
 module.exports = router;

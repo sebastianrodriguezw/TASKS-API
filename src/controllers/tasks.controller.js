@@ -17,6 +17,23 @@ exports.getTaskList = (req, res) =>{
   })
 }
 
+// delete specific task
+exports.createTask = (req, res) =>{
+  TaskModel.createTask(req.body, (rows_affected, err) =>{
+    if (rows_affected > 0) {
+      return res.status(200).json({
+        status: 'success',
+        message: 'Task created successfully'
+      });
+    }  else{
+      return res.status(400).json({
+        status: 'bad_request',
+        error: 'err'
+      });
+    }
+  })
+}
+
 // get specific task
 exports.getTask = (req, res) =>{
   TaskModel.getTask(req.params.id, (task, err) =>{
@@ -50,3 +67,5 @@ exports.deleteTask = (req, res) =>{
     }
   })
 }
+
+

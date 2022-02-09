@@ -8,7 +8,7 @@ var Task = (task) => {
   this.status = task.status;
 }
 
-//get task
+// get all tasks
 Task.getAllTasks = async(result) =>{
   const data = await db_cont.execute('SELECT * FROM tasks',( err, res) =>{
     console.log("Task fetched successfuly");
@@ -16,6 +16,17 @@ Task.getAllTasks = async(result) =>{
   })    
 }
 
+// create task 
+Task.createTask = async(body, result) =>{
+ 
+    await db_cont.execute('INSERT INTO tasks (date, name, description, status) VALUES (?, ?, ?, ?)', 
+    [body.date, body.name, body.description, body.status],( err, res) =>{
+      console.log("Task created successfuly");
+      result(res.affectedRows, err);
+  })
+}
+
+// get task by id
 Task.getTask = async(id, result) =>{
   const data = await db_cont.execute('SELECT * FROM tasks WHERE id = ?', [id], (err, res) =>{
     console.log("Task fetched successfuly");
@@ -23,7 +34,7 @@ Task.getTask = async(id, result) =>{
   })    
 } 
 
-//delete task 
+// delete task 
 Task.deleteTask = async(id, result) =>{
   const data = await db_cont.execute('DELETE FROM tasks WHERE id = ?', [id],( err, res) =>{
     console.log("Delete query ran successfuly");
