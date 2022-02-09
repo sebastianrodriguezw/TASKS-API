@@ -29,7 +29,8 @@ Task.createTask = async(body, result, next) =>{
 
 // get task by id
 Task.getTask = async(id, result) =>{
-  const data = await db_cont.execute('SELECT * FROM tasks WHERE id = ?', [id], (err, res) =>{
+  await db_cont.execute('SELECT * FROM tasks WHERE id = ?', [id], (err, res) =>{
+    if (err) throw err;
     console.log("Task fetched successfuly");
     result(res, err);
   })    
