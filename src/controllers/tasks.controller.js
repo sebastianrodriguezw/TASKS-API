@@ -21,7 +21,7 @@ exports.getTaskList = (req, res) =>{
 exports.createTask = (req, res) =>{
   TaskModel.createTask(req.body, (rows_affected, err) =>{
     if (rows_affected > 0) {
-      return res.status(200).json({
+      return res.send({
         status: 'success',
         message: 'Task created successfully'
       });
