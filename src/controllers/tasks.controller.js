@@ -17,7 +17,7 @@ exports.getTaskList = (req, res) =>{
   })
 }
 
-// delete specific task
+// create specific task
 exports.createTask = (req, res) =>{
   TaskModel.createTask(req.body, (rows_affected, err) =>{
     if (rows_affected > 0) {

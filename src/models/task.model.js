@@ -17,13 +17,14 @@ Task.getAllTasks = async(result) =>{
 }
 
 // create task 
-Task.createTask = async(body, result) =>{
- 
+Task.createTask = async(body, result, next) =>{
+ console.log(body)
     await db_cont.execute('INSERT INTO tasks (date, name, description, status) VALUES (?, ?, ?, ?)', 
     [body.date, body.name, body.description, body.status],( err, res) =>{
       console.log("Task created successfuly");
       result(res.affectedRows, err);
   })
+
 }
 
 // get task by id
