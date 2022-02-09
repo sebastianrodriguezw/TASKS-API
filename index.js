@@ -1,7 +1,8 @@
 const express = require('express');
 const dotenv = require('dotenv').config();
 const bodyParser = require('body-parser');
-const cors = require('cors')
+const cors = require('cors');
+const checkKey = require('check-object-key');
 
 // express app created
 const app = express();
@@ -23,8 +24,14 @@ app.get('/', (req, res) => {
 // import task routes
 const taskRoutes = require('./src/routes/task.route');
 
+// import user routes
+const userRoutes = require('./src/routes/user.route');
+
 // create task routes
 app.use('/tasks', taskRoutes);
+
+// create task routes
+app.use('/users', userRoutes);
 
 //listen PORT
 app.listen(PORT, () => {
