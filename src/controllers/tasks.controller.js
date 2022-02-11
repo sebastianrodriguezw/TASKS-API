@@ -21,7 +21,7 @@ exports.getTaskList = (req, res) =>{
 exports.createTask = (req, res) =>{
   body = req.body
 
-  if (body.date || body.name || body.description || body.status){
+  if (body.date && body.name && body.description && body.status){
     TaskModel.createTask(req.body, (rows_affected, err) =>{
       if (rows_affected > 0) {
         return res.send({
@@ -32,6 +32,34 @@ exports.createTask = (req, res) =>{
         return res.status(400).json({
           status: 'bad_request',
           error: err.sqlMessage
+        });
+      }
+    })
+  }else{
+    return res.status(404).json({
+      status: 'forbidden',
+      error: 'parameters missing'
+    });
+  }
+  
+}
+
+// create specific task
+exports.updateTask = (req, res) =>{
+  var body = req.body;
+  var params = req.params.id;
+  
+  if (body.date && body.name && body.description && body.status){
+    TaskModel.updateTask(body, params, (rows_affected, err) =>{
+      if (rows_affected > 0) {
+        return res.send({
+          status: 'success',
+          message: 'Task updated successfully'
+        });
+      }  else{
+        return res.status(400).json({
+          status: 'bad_request',
+          error: 'task not exits or parameters are invalid'
         });
       }
     })

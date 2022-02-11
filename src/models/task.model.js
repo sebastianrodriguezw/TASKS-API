@@ -21,13 +21,26 @@ Task.createTask = async(body, result, next) =>{
     await db_cont.execute('INSERT INTO tasks (date, name, description, status) VALUES (?, ?, ?, ?)', 
     [body.date, body.name, body.description, body.status],( err, res) =>{
       if(!err){
-        console.log("Task created successfuly");
         result(res.affectedRows, null);
       }else{
         result(null, err);
       }
     
   })
+}
+
+// edit task 
+Task.updateTask = async(body, params, result) =>{
+  await db_cont.execute('UPDATE tasks SET date = ?, name = ?, description = ?, status = ? WHERE id = ?', 
+  [body.date, body.name, body.description, body.status, params],( err, res) =>{
+    if(!err){
+      console.log("Task updated successfuly");
+      result(res.affectedRows, null);
+    }else{
+      result(null, err);
+    }
+  
+})
 }
 
 // get task by id
