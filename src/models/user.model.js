@@ -7,7 +7,7 @@ var User = (user) => {
 }
 
 // create user
-User.createUser = async(user, result) =>{
+User.sign_upUser = async(user, result) =>{
   await db_cont.execute('INSERT INTO users (username, password) VALUES (?, ?)', 
   [user.username, user.password],(err, res) =>{
     if(err){
@@ -20,7 +20,7 @@ User.createUser = async(user, result) =>{
 } 
 
 // get task by id
-User.getUser = async(user, result) =>{
+User.sign_inUser = async(user, result) =>{
   await db_cont.execute('SELECT * FROM users WHERE username = ?', 
     [user.username], (err, res) =>{
       result(res, err);
