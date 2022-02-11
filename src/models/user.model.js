@@ -1,6 +1,5 @@
 const db_cont = require('../../config/db.config');
 
-
 var User = (user) => {
   this.id = user.id;
   this.username = user.username;
