@@ -1,5 +1,7 @@
 const UserModel = require('../models/user.model')
 const bcrypt = require('../bcrypt/bcrypt')
+const jwt = require('jsonwebtoken')
+const {promisify} = require('util')
 
 // create user
 exports.createUser = async (req, res) =>{
@@ -38,10 +40,24 @@ exports.getUser = (req, res) =>{
       UserModel.getUser(req.body, (user, err) =>{
         if(user.length > 0){
           bcrypt.compare_password(req.body.password, user[0].password).then(user_is_valid => {
+            const id = user[0].id
+
+            const token = jwt.sign({id: id},
+              process.env.JWT_CREDENTIALS, {
+                expiresIn: process.env.JWT_TIEMPO_EXPIRA
+              })
+
+            const cookiesOptions = {
+              expires: new Date(Date.now()+process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
+              HttpOnly: true
+            }
+
+            res.cookie('jtw', token, cookiesOptions)
             return res.status(200).json({
               status: (user_is_valid ? 'success' : 'failed'),
               user_is_valid: user_is_valid
-            });
+            }); 
+
           })
         }else{
           return res.status(404).json({
