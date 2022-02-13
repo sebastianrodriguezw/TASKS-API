@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
 const db_cont = require('../../config/db.config')
 const {promisify} = require('util')
 
