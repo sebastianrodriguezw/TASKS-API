@@ -2,8 +2,6 @@ const TaskModel = require('../models/task.model')
 
 // get all tasks
 exports.getTaskList = (req, res) =>{
-  
-  console.log('hola')
   TaskModel.getAllTasks((tasks, err) =>{
     if(!err) {
       return res.status(200).json({
@@ -23,7 +21,7 @@ exports.getTaskList = (req, res) =>{
 exports.createTask = (req, res) =>{
   body = req.body
 
-  if (body.date && body.name && body.description && body.status){
+  if (body.date && body.name && body.description){
     TaskModel.createTask(req.body, (rows_affected, err) =>{
       if (rows_affected > 0) {
         return res.status(200).send({
