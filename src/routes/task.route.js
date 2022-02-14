@@ -5,18 +5,18 @@ const taskController = require('../controllers/tasks.controller');
 const authController = require('../controllers/auth.controller');
 
 // route for get all tasks
-router.get('/', authController.isAuthenticated, taskController.getTaskList);
+router.get('/', taskController.getTaskList);
 
 // route for create task
-router.post('/create',authController.isAuthenticated, taskController.createTask);
+router.post('/create', taskController.createTask);
 
 // route for get task by id
-router.get('/:id',authController.isAuthenticated, taskController.getTask);
+router.get('/:id', taskController.getTask);
 
 // route for delete task
-router.delete('/:id/delete', authController.isAuthenticated, taskController.deleteTask);
+router.delete('/:id/delete', taskController.deleteTask);
 
 // route for edit task
-router.post('/:id/update', authController.isAuthenticated, taskController.updateTask);
+router.post('/:id/update', taskController.updateTask);
 
 module.exports = router;

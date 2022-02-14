@@ -2,6 +2,8 @@ const TaskModel = require('../models/task.model')
 
 // get all tasks
 exports.getTaskList = (req, res) =>{
+  
+  console.log('hola')
   TaskModel.getAllTasks((tasks, err) =>{
     if(!err) {
       return res.status(200).json({
