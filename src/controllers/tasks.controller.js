@@ -3,7 +3,7 @@ const TaskModel = require('../models/task.model')
 // get all tasks
 exports.getTaskList = (req, res) =>{
   TaskModel.getAllTasks((tasks, err) =>{
-    if(!err) {
+    if(!err){
       return res.status(200).json({
         status: 'success',
         data: tasks
@@ -20,79 +20,80 @@ exports.getTaskList = (req, res) =>{
 // create specific task
 exports.createTask = (req, res) =>{
   body = req.body
-
-  if (body.date && body.name && body.description){
-    TaskModel.createTask(req.body, (rows_affected, err) =>{
-      if (rows_affected > 0) {
-        return res.status(200).send({
-          status: 'success',
-          message: 'Task created successfully'
-        });
-      }  else{
-        return res.status(400).json({
-          status: 'bad_request',
-          error: err.sqlMessage
-        });
-      }
-    })
-  }else{
-    return res.status(404).json({
-      status: 'forbidden',
-      error: 'parameters missing'
-    });
-  }
-  
+  TaskModel.createTask(body, (task) =>{
+    if(!err){
+      return res.status(200).send({
+        status: 'success',
+        message: 'Task created successfully'
+      });
+    }else{
+      return res.status(400).json({
+        status: 'bad_request',
+        error: err
+      });
+    } 
+  })
 }
 
 // create specific task
 exports.updateTask = (req, res) =>{
   var body = req.body;
-  var params = req.params.id;
+  var params = req.params;
   
-  if (body.date && body.name && body.description && body.status){
-    TaskModel.updateTask(body, params, (rows_affected, err) =>{
-      if (rows_affected > 0) {
-        return res.send({
+  TaskModel.updateTask(body, params, (task, err) =>{
+    if(!err){
+      if(task[0] === 1){
+        return res.status(200).send({
           status: 'success',
           message: 'Task updated successfully'
         });
-      }  else{
-        return res.status(400).json({
-          status: 'bad_request',
-          error: 'task not exits or parameters are invalid'
+      }else{
+        return res.status(404).json({
+          status: 'forbidden',
+          error: 'This record not exist or not changes'
         });
       }
-    })
-  }else{
-    return res.status(404).json({
-      status: 'forbidden',
-      error: 'parameters missing'
-    });
-  }
-  
-}
-
-// get specific task
-exports.getTask = (req, res) =>{
-  TaskModel.getTask(req.params.id, (task, err) =>{
-    if (task.length > 0) {
-      return res.status(200).json({
-        status: 'success',
-        data: task
-      });
-    }  else{
-      return res.status(404).json({
-        status: 'forbidden',
-        error: 'This record not exist'
+    }else{
+      return res.status(400).json({
+        status: 'bad_request',
+        error: err
       });
     }
   })
 }
 
+// get specific task
+exports.getTask = (req, res) =>{
+  var params = req.params;
+
+  TaskModel.getTask(params, (task, err) =>{
+    if(!err){
+      if(task){
+        return res.status(200).send({
+          status: 'success',
+          data: task
+        });
+      }else{
+        return res.status(404).json({
+          status: 'forbidden',
+          error: 'This record not exist'
+        });
+      }
+    }else{
+      return res.status(400).json({
+        status: 'bad_request',
+        error: err
+      });
+    } 
+  })
+}
+
 // delete specific task
 exports.deleteTask = (req, res) =>{
-  TaskModel.deleteTask(req.params.id, (rows_affected, err) =>{
-    if (rows_affected > 0) {
+  var params = req.params;
+
+  TaskModel.deleteTask(params, (task, err) =>{
+    if (task > 0) {
       return res.status(200).json({
         status: 'success',
         message: 'Task deleted successfully'

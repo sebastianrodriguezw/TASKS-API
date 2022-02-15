@@ -1,6 +1,6 @@
-const db_cont = require('../../config/db.config');
+const { Task } = require('../../models');
 
-var Task = (task) => {
+var TaskObj = (task) => {
   this.id = task.id;
   this.date = task.date;
   this.name = task.name;
@@ -9,61 +9,61 @@ var Task = (task) => {
 }
 
 // get all tasks
-Task.getAllTasks = async(result) =>{
-    await db_cont.execute('SELECT * FROM tasks',( err, res) =>{
+TaskObj.getAllTasks = async(result) =>{
+  try{
+    const task = await Task.findAll();
     console.log("Task fetched successfuly");
-    result(res, err);
-  })    
+    result(task, null);
+  } catch (err) {
+    result(null, err.parent.sqlMessage);
+  }  
 }
 
 // create task 
-Task.createTask = async(body, result, next) =>{
-    await db_cont.execute('INSERT INTO tasks (date, name, description, status) VALUES (?, ?, ?, ?)', 
-    [body.date, body.name, body.description, body.status],( err, res) =>{
-      if(!err){
-        result(res.affectedRows, null);
-      }else{
-        result(null, err);
-      }
-    
-  })
+TaskObj.createTask = async(body, result) =>{
+  const { date, name, description, status } = body
+  
+  try{
+    const task = await Task.create({ date, name, description, status });
+
+    result(task, null);
+  }catch(err){
+    result(null, err.parent.sqlMessage);
+  }
 }
 
 // edit task 
-Task.updateTask = async(body, params, result) =>{
-  await db_cont.execute('UPDATE tasks SET date = ?, name = ?, description = ?, status = ? WHERE id = ?', 
-  [body.date, body.name, body.description, body.status, params],( err, res) =>{
-    if(!err){
-      console.log("Task updated successfuly");
-      result(res.affectedRows, null);
-    }else{
-      result(null, err);
-    }
-  
-})
+TaskObj.updateTask = async(body, params, result) =>{
+  try{
+    const task = await Task.update(body, { where: params });
+
+    result(task, null);
+  }catch (err) {
+    result(null, err.parent.sqlMessage);
+  }
 }
 
 // get task by id
-Task.getTask = async(id, result) =>{
-  await db_cont.execute('SELECT * FROM tasks WHERE id = ?', [id], (err, res) =>{
-    if (err) throw err;
-    console.log("Task fetched successfuly");
-    result(res, err);
-  })    
+TaskObj.getTask = async(params, result) =>{
+  try{
+    const task = await Task.findOne({ where: params });
+
+    result(task, null);
+  }catch (err) {
+    result(null, err.parent.sqlMessage);
+  }   
 } 
 
 // delete task 
-Task.deleteTask = async(id, result) =>{
-  await db_cont.execute('DELETE FROM tasks WHERE id = ?', [id],( err, res) =>{
-    if(!res.affectedRows > 0){
-      console.log("Nothing deleted");
-      result(res.affectedRows, err);
-    }else{
-      console.log("Delete query ran successfuly");
-      result(res.affectedRows, err);
-    }
-  })    
+TaskObj.deleteTask = async(params, result) =>{
+  try{
+    const task = await Task.destroy({ where: params });
+
+    result(task, null);
+  }catch (err) {
+    result(null, err.parent.sqlMessage);
+  }
 }
 
 
-module.exports = Task;
+module.exports = TaskObj;
