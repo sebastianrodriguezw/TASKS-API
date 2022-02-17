@@ -13,7 +13,8 @@ exports.sign_upUser = async (req, res) =>{
     bcrypt.encrypted(req.body).then(user => {
       UserModel.sign_upUser(user, (user, err) =>{
         if(!err) {
-          return res.status(200).json({
+          res.header("Access-Control-Allow-Origin", "*");
+          res.status(200).json({
             status: 'success',
             message: 'User created successfuly',
             user: user
@@ -40,24 +41,36 @@ exports.sign_inUser = (req, res) =>{
     UserModel.sign_inUser(req.body, (user, err) =>{
       if(user){
         bcrypt.compare_password(req.body.password, user.password).then(user_is_valid => {
-          const id = user.id
 
-          const token = jwt.sign({id: id},
-            process.env.JWT_CREDENTIALS, {
-              expiresIn: process.env.JWT_TIEMPO_EXPIRA
-            })
+          if(user_is_valid){
+            const id = user.id
 
-          const cookiesOptions = {
-            expires: new Date(Date.now()+process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
-            HttpOnly: true
+            const token = jwt.sign({id: id},
+              process.env.JWT_CREDENTIALS, {
+                expiresIn: process.env.JWT_TIEMPO_EXPIRA
+              })
+
+            const cookiesOptions = {
+              expires: new Date(Date.now()+process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
+              HttpOnly: true
+            }
+
+            res.cookie('jwt', token, cookiesOptions)
+            return res.status(200).json({
+              status: 'success',
+              user_is_valid: user_is_valid,
+              token: token
+              
+            }); 
+          }else{
+            return res.status(200).json({
+              status: 'failed',
+              user_is_valid: user_is_valid
+              
+            }); 
           }
-
-          res.cookie('jwt', token, cookiesOptions)
-          return res.status(200).json({
-            status: (user_is_valid ? 'success' : 'failed'),
-            user_is_valid: user_is_valid
-            
-          }); 
+         
+          
 
         })
       }else{
