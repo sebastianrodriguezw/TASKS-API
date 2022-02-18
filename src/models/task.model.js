@@ -46,14 +46,15 @@ TaskObj.get_user_tasks = async(id, token, result) =>{
 }
 // create task 
 TaskObj.createTask = async(body, result) =>{
-  const { date, name, description, status } = body
+  console.log(body)
+  const { date, name, description, status, user_id } = body
   
   try{
-    const task = await Task.create({ date, name, description, status });
-
+    const task = await Task.create({ date, name, description, status, user_id });
+    
     result(task, null);
   }catch(err){
-    result(null, err.parent.sqlMessage);
+    result(null, err);
   }
 }
 

@@ -21,7 +21,8 @@ exports.getTaskList = (req, res) =>{
 // create specific task
 exports.createTask = (req, res) =>{
   body = req.body
-  TaskModel.createTask(body, (task) =>{
+  console.log(body)
+  TaskModel.createTask(body, (task, err) =>{
     if(!err){
       return res.status(200).send({
         status: 'success',

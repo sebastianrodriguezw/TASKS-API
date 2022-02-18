@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
     date: DataTypes.DATE,
     name: DataTypes.STRING,
     description: DataTypes.STRING,
-    status: DataTypes.STRING
+    status: DataTypes.STRING,
+    user_id: DataTypes.INTEGER
   }, {
     sequelize,
     tableName: 'tasks',
