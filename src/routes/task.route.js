@@ -4,9 +4,10 @@ const router = express.Router();
 const taskController = require('../controllers/tasks.controller');
 const authController = require('../controllers/auth.controller');
 
+/*
 // route for get all tasks
 router.get('/', authController.isAuthenticated, taskController.getTaskList);
-
+*/
 // route for create task
 router.post('/create', authController.isAuthenticated, taskController.createTask);
 

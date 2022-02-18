@@ -1,5 +1,6 @@
 const TaskModel = require('../models/task.model')
 
+/*
 // get all tasks
 exports.getTaskList = (req, res) =>{
   TaskModel.getAllTasks((tasks, err) =>{
@@ -16,7 +17,7 @@ exports.getTaskList = (req, res) =>{
     }
   })
 }
-
+*/
 // create specific task
 exports.createTask = (req, res) =>{
   body = req.body

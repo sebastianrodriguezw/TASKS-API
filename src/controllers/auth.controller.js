@@ -4,14 +4,14 @@ const db_cont = require('../../config/db.config')
 const {promisify} = require('util')
 
 exports.isAuthenticated = async (req, res, next) => {
-    if(req.cookies.jwt) { req.headers['jwt'] = req.cookies.jwt }
+    if(req.cookies.jwt) { req.headers['authorization'] = req.cookies.jwt }
 
-    console.log(req.headers)
-
-    if(req.headers['jwt']) {
+    if(req.headers['authorization']) {
         try{
-            const decodificada = await promisify(jwt.verify)(req.headers['jwt'], process.env.JWT_CREDENTIALS)
+            const decodificada = await promisify(jwt.verify)(req.headers['authorization'], process.env.JWT_CREDENTIALS)
             await User.findOne({ where: { id: decodificada.id } });
+
+
             if(!res){return next()}
 
             req.user = res[0]

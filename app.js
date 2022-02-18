@@ -3,12 +3,11 @@ const dotenv = require('dotenv').config();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
-
-const { sequelize, User, Task } = require('./models');
-
+require('./associations/associations')
 
 // express app created
 const app = express();
+app.use(cors());
 
 // config the server port
 
@@ -44,17 +43,6 @@ app.use('/tasks', taskRoutes);
 
 // create task routes
 app.use('/users', userRoutes);
-
-app.get('/alltasks', async (req, res) => {
-    try{
-        const task = await Task.findAll();
-
-        return res.json(task);
-    } catch (err) {
-        console.error(err)
-        return res.status(500).json(err)
-    }
-})
 
 //listen PORT
 app.listen(PORT, async () => {

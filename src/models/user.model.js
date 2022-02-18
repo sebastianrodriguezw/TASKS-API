@@ -12,7 +12,6 @@ UserObj.sign_upUser = async(user, result) =>{
   
   try{
     const user = await User.create({ username, password });
-    console.log("secreo")
     result(user, null);
   }catch(err){
     result(null, err.parent.sqlMessage);

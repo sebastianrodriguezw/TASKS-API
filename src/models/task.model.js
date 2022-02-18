@@ -1,4 +1,7 @@
 const { Task } = require('../../models');
+const { User } = require('../../models');
+const jwt = require('jsonwebtoken')
+const {promisify} = require('util')
 
 var TaskObj = (task) => {
   this.id = task.id;
@@ -8,6 +11,7 @@ var TaskObj = (task) => {
   this.status = task.status;
 }
 
+/*
 // get all tasks
 TaskObj.getAllTasks = async(result) =>{
   try{
@@ -18,7 +22,28 @@ TaskObj.getAllTasks = async(result) =>{
     result(null, err.parent.sqlMessage);
   }  
 }
+*/
 
+// get user tasks
+TaskObj.get_user_tasks = async(id, token, result) =>{
+  const decodificada = await promisify(jwt.verify)(token, process.env.JWT_CREDENTIALS)
+  await User.findOne({ where: { id: decodificada.id } });
+
+  if(decodificada.id == id){
+    try{
+      const tasks = await Task.findAll({ where: { user_id: id } });
+      console.log("Task fetched successfuly");
+      result(tasks, null);
+    } catch (err) {
+      result(null, err);
+    }  
+  }else{
+    result(null, {
+      msg: "You do not have permission to display another user tasks"
+    });
+  }
+  
+}
 // create task 
 TaskObj.createTask = async(body, result) =>{
   const { date, name, description, status } = body

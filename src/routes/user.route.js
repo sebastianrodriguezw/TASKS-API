@@ -12,4 +12,6 @@ router.post('/sign_up', userController.sign_upUser);
 // log out user
 router.get('/log_out', userController.log_outUser);
 
+// get user tasks
+router.get('/:id/tasks', userController.get_user_tasks);
 module.exports = router;
