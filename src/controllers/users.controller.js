@@ -5,9 +5,9 @@ const jwt = require('jsonwebtoken')
 
 //get user products
 exports.get_user_tasks = (req, res) =>{
-  if(req.cookies.jwt) { req.headers['jwt'] = req.cookies.jwt }
-  
-  TaskModel.get_user_tasks(req.params.id, req.headers['jwt'], (tasks, err) =>{
+  if(req.cookies.jwt) { req.headers['authorization'] = req.cookies.jwt }
+
+  TaskModel.get_user_tasks(req.params.id, req.headers['authorization'], (tasks, err) =>{
     if(!err){
       return res.status(200).json({
         status: 'success',
