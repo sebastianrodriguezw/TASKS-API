@@ -44,7 +44,7 @@ exports.createTask = (req, res) =>{
   
 }
 
-// create specific task
+// update specific task
 exports.updateTask = (req, res) =>{
   var body = req.body;
   var params = req.params.id;
